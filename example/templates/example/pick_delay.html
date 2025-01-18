@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pick Delay</title>
+</head>
+<body>
+  <h1>Trigger sample_task with Delay or Apply_async</h1>
+  <form method="POST">
+    {% csrf_token %}
+    
+    <label for="message">Message:</label>
+    <input type="text" name="message" id="message" placeholder="Enter a message" />
+
+    <br><br>
+
+    <label for="execution_type_delay">
+      <input type="radio" name="execution_type" value="delay" id="execution_type_delay" checked />
+      .delay() (Immediate)
+    </label>
+    <br>
+    <label for="execution_type_async">
+      <input type="radio" name="execution_type" value="apply_async" id="execution_type_async" />
+      .apply_async (Use Countdown)
+    </label>
+
+    <br><br>
+
+    <label for="countdown">Countdown (seconds):</label>
+    <input type="number" name="countdown" id="countdown" value="0" min="0" />
+
+    <br><br>
+
+    <button type="submit">Run Task</button>
+  </form>
+</body>
+</html>
