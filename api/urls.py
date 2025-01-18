@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django_qstash.views import qstash_webhook_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('example.urls')),
+    path("qstash/webhook/", qstash_webhook_view),
 ]
