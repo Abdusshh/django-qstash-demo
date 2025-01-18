@@ -15,6 +15,20 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+from decouple import config
+
+# required by qstash-py
+QSTASH_TOKEN = config("QSTASH_TOKEN")
+QSTASH_CURRENT_SIGNING_KEY = config("QSTASH_CURRENT_SIGNING_KEY")
+QSTASH_NEXT_SIGNING_KEY = config("QSTASH_NEXT_SIGNING_KEY")
+
+# required by django-qstash
+DJANGO_QSTASH_DOMAIN = config("DJANGO_QSTASH_DOMAIN")
+DJANGO_QSTASH_WEBHOOK_PATH = config(
+    "DJANGO_QSTASH_WEBHOOK_PATH", default="/qstash/webhook/"
+)
+DJANGO_QSTASH_FORCE_HTTPS = config("DJANGO_QSTASH_FORCE_HTTPS", default=True)
+DJANGO_QSTASH_RESULT_TTL = config("DJANGO_QSTASH_RESULT_TTL", default=604800)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -25,8 +39,15 @@ SECRET_KEY = 'django-insecure-=cldztbc4jg&xl0!x673!*v2_=p$$eu)=7*f#d0#zs$44xx-h^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app']
+# ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app', 'funny-sides-cheat.loca.lt']
 
+# Dangerous: disable host header validation
+ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = config(
+    "CSRF_TRUSTED_ORIGINS",
+    default=[],
+    cast=lambda v: [x.strip() for x in v.split(",") if x.strip()] if v else [],
+)
 
 # Application definition
 
@@ -37,7 +58,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'example'
+    'example', 
+    "django_qstash"
 ]
 
 MIDDLEWARE = [
